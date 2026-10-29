@@ -11,19 +11,18 @@ const staggerContainer = { hidden: { opacity: 0 }, visible: { opacity: 1, transi
 function Navbar({ theme, toggleTheme }) {
   const location = useLocation();
   const isActive = (path) => location.pathname === path ? "text-primary-purple font-bold" : "text-gray-600 dark:text-gray-300 hover:text-primary-purple dark:hover:text-primary-purple";
-
-  return (
+return (
     <nav className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-800/50 backdrop-blur-md sticky top-0 z-40 bg-white/70 dark:bg-[#0a0514]/70 transition-colors duration-500">
-      <div className="flex items-center gap-3">
-  {/* Ta photo de profil transformée en logo rond */}
-  <img 
-    src="/photo_profil.jpeg" 
-    alt="Logo Massina" 
-    className="w-10 h-10 rounded-full object-cover border-2 border-purple-600"
-  />
-  {/* Ton nom juste à côté (optionnel) */}
-  <span className="text-xl font-bold text-white">Massina Diao</span>
-</div>
+      <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <img 
+          src="/photo_profil.jpeg" 
+          alt="Logo Massina" 
+          className="w-10 h-10 rounded-full object-cover border-2 border-primary-purple shadow-sm"
+        />
+        <span className="text-2xl font-serif font-bold tracking-tight text-gray-900 dark:text-white">
+          Massina <span className="text-primary-purple">Diao</span>
+        </span>
+      </Link>
       
       <ul className="hidden md:flex space-x-8 text-sm font-medium items-center">
         <li><Link to="/" className={`transition ${isActive('/')}`}>Accueil</Link></li>
