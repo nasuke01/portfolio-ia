@@ -10,32 +10,68 @@ const staggerContainer = { hidden: { opacity: 0 }, visible: { opacity: 1, transi
 // --- NAVBAR ---
 function Navbar({ theme, toggleTheme }) {
   const location = useLocation();
-  const isActive = (path) => location.pathname === path ? "text-primary-purple font-bold" : "text-gray-600 dark:text-gray-300 hover:text-primary-purple dark:hover:text-primary-purple";
-return (
-    <nav className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-800/50 backdrop-blur-md sticky top-0 z-40 bg-white/70 dark:bg-[#0a0514]/70 transition-colors duration-500">
-      <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-        <img 
-          src="/photo_profil.jpeg" 
-          alt="Logo Massina" 
-          className="w-10 h-10 rounded-full object-cover border-2 border-primary-purple shadow-sm"
-        />
-        <span className="text-2xl font-serif font-bold tracking-tight text-gray-900 dark:text-white">
-          Massina <span className="text-primary-purple">Diao</span>
-        </span>
-      </Link>
-      
-      <ul className="hidden md:flex space-x-8 text-sm font-medium items-center">
-        <li><Link to="/" className={`transition ${isActive('/')}`}>Accueil</Link></li>
-        <li><Link to="/projets" className={`transition ${isActive('/projets')}`}>Projets</Link></li>
-        <li><Link to="/experiences" className={`transition ${isActive('/experiences')}`}>Expériences</Link></li>
-        <li><Link to="/competences" className={`transition ${isActive('/competences')}`}>Compétences</Link></li>
-        <li><Link to="/a-propos" className={`transition ${isActive('/a-propos')}`}>À propos</Link></li>
-        <li><Link to="/contact" className={`transition ${isActive('/contact')}`}>Contact</Link></li>
-      </ul>
+  const [isOpen, setIsOpen] = React.useState(false);
 
-      <button onClick={toggleTheme} className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition text-gray-600 dark:text-gray-300">
-        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-      </button>
+  const isActive = (path) => location.pathname === path ? "text-primary-purple font-bold" : "text-gray-600 dark:text-gray-300 hover:text-primary-purple dark:hover:text-primary-purple";
+
+  return (
+    <nav className="p-6 border-b border-gray-200 dark:border-gray-800/50 backdrop-blur-md sticky top-0 z-40 bg-white/70 dark:bg-[#0a0514]/70 transition-colors duration-500">
+      <div className="flex justify-between items-center">
+        
+        {/* 1. Logo */}
+        <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <img 
+            src="/photo_profil.jpeg" 
+            alt="Logo Massina" 
+            className="w-10 h-10 rounded-full object-cover border-2 border-primary-purple shadow-sm"
+          />
+          <span className="text-2xl font-serif font-bold tracking-tight text-gray-900 dark:text-white">
+            Massina <span className="text-primary-purple">Diao</span>
+          </span>
+        </Link>
+        
+        {/* 2. Menu Ordinateur */}
+        <ul className="hidden md:flex space-x-8 text-sm font-medium items-center">
+          <li><Link to="/" className={`transition ${isActive('/')}`}>Accueil</Link></li>
+          <li><Link to="/projets" className={`transition ${isActive('/projets')}`}>Projets</Link></li>
+          <li><Link to="/experiences" className={`transition ${isActive('/experiences')}`}>Expériences</Link></li>
+          <li><Link to="/competences" className={`transition ${isActive('/competences')}`}>Compétences</Link></li>
+          <li><Link to="/a-propos" className={`transition ${isActive('/a-propos')}`}>À propos</Link></li>
+          <li><Link to="/contact" className={`transition ${isActive('/contact')}`}>Contact</Link></li>
+          <li>
+            <button onClick={toggleTheme} className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition text-gray-600 dark:text-gray-300">
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+          </li>
+        </ul>
+
+        {/* 3. Boutons Mobile (Hamburger + Thème) */}
+        <div className="md:hidden flex items-center gap-3">
+          <button onClick={toggleTheme} className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition text-gray-600 dark:text-gray-300">
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          
+          <button onClick={() => setIsOpen(!isOpen)} className="text-gray-900 dark:text-white focus:outline-none p-1">
+            {isOpen ? (
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            ) : (
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* 4. Menu Déroulant Mobile */}
+      {isOpen && (
+        <ul className="md:hidden flex flex-col items-center space-y-4 mt-4 pb-2 text-base font-medium border-t border-gray-200 dark:border-gray-800 pt-4">
+          <li><Link to="/" className={isActive('/')} onClick={() => setIsOpen(false)}>Accueil</Link></li>
+          <li><Link to="/projets" className={isActive('/projets')} onClick={() => setIsOpen(false)}>Projets</Link></li>
+          <li><Link to="/experiences" className={isActive('/experiences')} onClick={() => setIsOpen(false)}>Expériences</Link></li>
+          <li><Link to="/competences" className={isActive('/competences')} onClick={() => setIsOpen(false)}>Compétences</Link></li>
+          <li><Link to="/a-propos" className={isActive('/a-propos')} onClick={() => setIsOpen(false)}>À propos</Link></li>
+          <li><Link to="/contact" className={isActive('/contact')} onClick={() => setIsOpen(false)}>Contact</Link></li>
+        </ul>
+      )}
     </nav>
   );
 }
